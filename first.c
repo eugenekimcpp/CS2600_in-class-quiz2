@@ -4,12 +4,6 @@
 
     This program practices the game called "Tic-Tac-Toe"
 
-    Two level: 
-    * person vs. person 
-    * person vs. random computer
-
-
-
     First approach: 
     1. Create a function that keep displays the template, using printf()
     2. use random() NOT suedo random () (range 1-9)
@@ -26,22 +20,26 @@
 
 */
 #include <stdio.h>
-#include <time.h> 
+#include <time.h>
+#include <stdlib.h> 
+
 
 // Global Variables
 char board[3][3];
-const char O = 'O';
-const char X = 'X';
+const char O = 'O'; // player2 and computer
+const char X = 'X'; // player1
 
 void printDash();
 void displayBoard();
 void resetBoard();
+void computerMove();
 
 
 int main() {
 
     // create variables 
     int choice;
+    srand(time(0)); // use current time as seed for random generator
 
     // prompt the user for game they wish to play
     // read information from console
@@ -54,11 +52,11 @@ int main() {
 
 
     resetBoard();
-    if(choice == 1)
+    if(choice == 1) // vs person
     {
         printf("You have entered 1\n");
     }
-    else if(choice == 2)
+    else if(choice == 2) // vs computer
     {
         printf("You have entered 2\n");
     }
@@ -110,4 +108,26 @@ void resetBoard()
             board[i][j] = ' ';
         }
     }
+}
+void computerMove()
+{
+    int x,y;
+    
+    do{
+        x = (rand() % 3); // range 0-2
+        y = (rand() % 3); 
+
+        if (board[x][y] != ' ')
+        {
+            // CASE: invalid input generated
+            continue;
+        }
+        else 
+        {
+            // CASE: valid input generated 
+            board[x][y] = O;
+        }
+
+    }while(board[x][y] != ' '); // loop until input spot is not empty
+
 }
