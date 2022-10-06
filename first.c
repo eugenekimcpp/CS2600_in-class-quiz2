@@ -16,7 +16,10 @@
     void printBorad()
     void playerMove()
     void computerMove()
-
+    bool isFull() // if return true && No winner, its a draw
+    
+    char winnerCheck() // return either O or X
+   
 
 */
 #include <stdio.h>
@@ -33,6 +36,7 @@ void printDash();
 void displayBoard();
 void resetBoard();
 void computerMove();
+bool isFull();
 
 
 int main() {
@@ -130,4 +134,20 @@ void computerMove()
 
     }while(board[x][y] != ' '); // loop until input spot is not empty
 
+}
+bool isFull()
+{
+    bool full = true;
+    for(int i = 0; i < 3; ++i)
+    {
+        for(int j = 0; j<3;++J)
+        {
+            if(board[i][j] == ' ')
+            {
+                full = false;
+            }
+        }
+    }
+
+    return full; 
 }
