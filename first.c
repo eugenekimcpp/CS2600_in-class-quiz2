@@ -75,7 +75,7 @@ int main() {
         else if(choice == 2) // vs computer
         {
             printf("You have entered 2\n");
-            int status = checkWinner();
+            int status = 0;
             int who = 0; // range 0-1, 0=player, 1=computer
             int counter = 2;
             
@@ -98,19 +98,23 @@ int main() {
                 ++counter;
 
                 status = checkWinner();
+
             } while(status == 0);
-            
-            // Exit the game loop when we have winner(1) or tie (-1)
+
+
             if((status == 1) && (winner == X))
             {
+                displayBoard();
                 printf("Player1 win!!!\n");
             }
             else if((status == 1) && (winner == O))
             {
+                displayBoard();
                 printf("Computer Won...\n");
             }
             else
             {
+                displayBoard();
                 printf("It's a tie\n");
             }
         
@@ -168,28 +172,29 @@ void resetBoard()
 void computerMove()
 {
     int x,y;
-    
+    int check = 0;
     do{
         x = (rand() % 3); // range 0-2
         y = (rand() % 3); 
 
-        if (board[x][y] != ' ')
+        if (board[x][y] == ' ')
         {
-            // CASE: invalid input generated
-            continue;
+            board[x][y] = O;
+            check = 1;
+
         }
         else 
         {
-            // CASE: valid input generated 
-            board[x][y] = O;
+            // CASE: in-valid input generated 
+            continue;
         }
 
-    }while(board[x][y] != ' '); // loop until input spot is not empty
+    }while(check == 0); // loop until input spot is not empty
 
 }
 int isFull()
 {
-    int full = 1;
+    
     for(int i = 0; i < 3; ++i)
     {
         for(int j = 0; j<3;++j)
@@ -197,12 +202,12 @@ int isFull()
             if(board[i][j] == ' ')
             {
                 // if encounter any open spot, then it not full
-                full = 0;
+                return 0; 
             }
         }
     }
 
-    return full; 
+    return 1; 
 }
 void playerMove()
 {
@@ -212,6 +217,8 @@ void playerMove()
     
     do{
         scanf("%d %d", &x, &y);
+        x -= 1;
+        y -= 1;
         if(board[x][y] == ' ')
         {
             // if spot is empty, mark
@@ -231,61 +238,64 @@ int checkWinner()
 {
     // initially 0 = progressing
     int result = 0; 
+    int check; 
 
-    if((board[0][0] == board[0][1]) && (board[0][1] == board[0][2])) 
+    if((board[0][0] == board[0][1]) && (board[0][1] == board[0][2]) && board[0][0] != ' ') 
     {
         // Column check start
         winner = board[0][0]; // store winning character 
-        result = 1;
+        return 1;
     }
-    else if((board[1][0] == board[1][1]) && (board[1][1] == board[1][2])) 
+    else if((board[1][0] == board[1][1]) && (board[1][1] == board[1][2]) && board[1][0] != ' ') 
     {
         winner = board[1][0];
-        result = 1;
+        return 1;    
     }
-    else if((board[2][0] == board[2][1]) && (board[2][1] == board[2][2]))
+    else if((board[2][0] == board[2][1]) && (board[2][1] == board[2][2]) && board[2][0] != ' ')
     {
         winner = board[2][0];
-        result = 1;
+        return 1; 
     } 
-    else if((board[0][0] == board[1][0]) && (board[1][0] == board[2][0]))
+    else if((board[0][0] == board[1][0]) && (board[1][0] == board[2][0]) && board[0][0] != ' ')
     {
         // ROW check start
         winner = board[0][0];
-        result = 1;
+        return 1; 
     }
-    else if((board[0][1] == board[1][1]) && (board[1][1] == board[2][1]))
+    else if((board[0][1] == board[1][1]) && (board[1][1] == board[2][1]) && board[0][1] != ' ')
     {
         winner = board[0][1];
-        result = 1;
+        return 1; 
     }
-    else if((board[0][2] == board[1][2]) && (board[1][2] == board[2][2]))
+    else if((board[0][2] == board[1][2]) && (board[1][2] == board[2][2]) && board[0][2] != ' ')
     {
         winner = board[0][2];
-        result = 1;
+        return 1; 
     }
-    else if((board[0][0] == board[1][1]) && (board[1][1] == board[2][2]))
+    else if((board[0][0] == board[1][1]) && (board[1][1] == board[2][2]) && board[0][0] != ' ')
     {
         // diagnal check start
         winner = board[0][0];
-        result = 1;
+        return 1; 
     }
-    else if((board[0][2] == board[1][1]) && (board[1][1] == board[2][0]))
+    else if((board[0][2] == board[1][1]) && (board[1][1] == board[2][0]) && board[0][2] != ' ')
     {
         winner = board[0][2];
-        result = 1;
+        return 1; 
     }
     else
     {
+        check = isFull(); 
+
         //enter here if no match found
-        if(isFull())
+        if(check == 1)
         {
             //enter here when board is full, but no matching winner found
-            result = -1; // tie
+            return -1; // tie
         }
         else
         {
-            result = 0; //still progressing
+            return 0; //still progressing
         }
 
     }
