@@ -15,8 +15,9 @@
     void resetBoard()
     void printBorad()
     void playerMove()
+    void otherPlayerMove()
     void computerMove()
-    bool isFull() // if return true && No winner, its a draw
+    int isFull() // if return true && No winner, its a draw
     int checkWinner(); // 1=yes 0=progressing -1=noWinner
 
     
@@ -41,6 +42,7 @@ void resetBoard();
 void computerMove();
 int isFull();
 void playerMove();
+void otherPlayerMove();
 int checkWinner();
 
 
@@ -68,9 +70,49 @@ int main() {
 
         if(choice == 1) // vs person
         {
+            printf("You have entered 1\n");
+            int status = 0;
+            int who = 0;
+            int counter = 0;
 
-            printf("still working on it\n");
+            // game play loop
+            do {
+                // display current board
+                printf("The current Status is: \n");
+                displayBoard();
+                who = counter % 2;
+                
+                if(who == 0)
+                {
+                    playerMove();
+                }
+                else
+                {
+                    otherPlayerMove();
+                }
+                ++counter;
 
+                status = checkWinner();
+
+            } while(status == 0);
+
+
+            if((status == 1) && (winner == X))
+            {
+                displayBoard();
+                printf("Player1 win!!!\n");
+            }
+            else if((status == 1) && (winner == O))
+            {
+                displayBoard();
+                printf("Player2 win!!!\n");
+            }
+            else
+            {
+                displayBoard();
+                printf("It's a tie\n");
+            }
+        
         }
         else if(choice == 2) // vs computer
         {
@@ -223,6 +265,31 @@ void playerMove()
         {
             // if spot is empty, mark
             board[x][y] = X;
+            break;
+        }
+        else 
+        {
+            printf("Invalid move, try again!\n");
+        }
+    
+    }while(1);
+
+
+}
+void otherPlayerMove()
+{
+    // this funciton get input from user, mark the move on board
+    int x,y;
+    printf("Player2: make your move\n");
+    
+    do{
+        scanf("%d %d", &x, &y);
+        x -= 1;
+        y -= 1;
+        if(board[x][y] == ' ')
+        {
+            // if spot is empty, mark
+            board[x][y] = O;
             break;
         }
         else 
